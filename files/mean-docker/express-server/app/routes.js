@@ -93,7 +93,7 @@ module.exports = function (app) {
         var userId = req.body._id;
 
         Account.products.push(Product);
-        var userInfo = await Account.findUserInfo(userId);
+        var userInfo = await Account.findUserAllInfo(userId);
 
         var transactions = await Transaction.findTsById(userId);
 
