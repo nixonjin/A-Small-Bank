@@ -1,4 +1,7 @@
 var Todo = require('./models/todo');
+var Product = require('./models/product')
+var Account = require('./models/accout')
+var Transaction = require('./models/transaction')
 
 function getTodos(res) {
     Todo.find(function (err, todos) {
@@ -15,6 +18,32 @@ function getTodos(res) {
 module.exports = function (app) {
 
     // api ---------------------------------------------------------------------
+    //login
+    app.post('api/login',function(req,res){
+
+    })
+
+    //get userInfo 包括所有的存款投资金额，交易记录等个人首页的信息
+    app.get('api/userInfo',function(req,res){
+
+    })
+
+    //deposit
+    app.post('api/deposit',function(req,res){
+
+    })
+
+    //withdraw
+    app.get("api/withdraw",function(res,res){
+
+    })
+
+    //buyProduct
+    app.post('api/buyProduct',function(req,res){
+        
+    })
+
+
     // get all todos
     app.get('/api/todos', function (req, res) {
         // use mongoose to get all todos in the database
