@@ -6,44 +6,60 @@ module.exports = function (app) {
 
     // api ---------------------------------------------------------------------
     // signup
-    app.post('api/signup',function(req,res){
-        var username = req.body.userName;
+    app.post('/api/signup',async function(req,res){
+        console.log('begin sign up');
+
+        var userName = req.body.userName;
         var userPwd = req.body.userPwd;
+        var resData={
+            code: 0,
+            message: ''
+        };
         if(userName == '' || userPwd == ''){
+            console.log('用户名或密码不能为空');
             resData.code = 1;
             resData.message = '用户名或密码不能为空';
             res.json(resData);
             return;
         }
-        var result = Account.createUser(userName,userPwd);
+        var result = await Account.createUser(userName,userPwd)
         if(result){
-            resdata.message = '注册成功';
+            console.log('注册成功');
+            resData.message = '注册成功';
         }else {
+            console.log('该用户名已被注册，请更换用户名');
             resData.code = 2;
-            resdata.message = '该用户名已被注册，请更换用户名';
+            resData.message = '该用户名已被注册，请更换用户名';
         }
-        res.json(resdata);
+        res.json(resData);
     })
 
     //login
-    app.post('api/login',function(req,res){
-        var username = req.body.userName;
+    app.post('/api/login',async function(req,res){
+        var userName = req.body.userName;
         var userPwd = req.body.userPwd;
+        var resData={
+            code: 0,
+            message: ''
+        };
         if(userName == '' || userPwd == ''){
+            console.log('用户名或密码不能为空');
             resData.code = 1;
             resData.message = '用户名或密码不能为空';
             res.json(resData);
             return;
         }
         //查询数据库验证用户名和密码
-        var userInfo = Account.findUserInfo(userName,userPwd);
-        if(!userInfo){
+        var userInfo = await Account.findUserInfo(userName,userPwd);
+        if(userInfo==null){
+            console.log('用户名或密码错误');
             resData.code = 2;
             resData.message = '用户名或密码错误';
             res.json(resData);
             return;
         }
         //验证通过则登录
+        console.log('登录成功');
         resData.message = '登录成功';
         resData.userInfo = {
             _id: userInfo._id,
@@ -60,8 +76,14 @@ module.exports = function (app) {
     })
 
     //logout
-    app.get('/user/logout',function(req,res){
+    app.get('/api/logout',function(req,res){
         //请除cookie
+        console.log('登出成功');
+        var resData={
+            code: 0,
+            message: ''
+        };
+        resData.message = '登出成功';
         req.cookies.set('userInfo',null);
         res.json(resData);
     })

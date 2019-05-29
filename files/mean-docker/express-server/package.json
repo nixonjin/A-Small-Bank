@@ -1,5 +1,8 @@
 {
   "name": "node-small-bank",
+  "scripts": {
+      "start": "node server.js"
+  },
   "version": "0.0.1",
   "description": "Simple bank application.",
   "repository": "",

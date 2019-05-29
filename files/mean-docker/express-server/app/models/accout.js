@@ -11,16 +11,17 @@ var account = new Schema({ accountId: String,//用户id
     // huoqiProperty: { type: Number, min: 0, default: 0 }//活期存款
 });
 
-account.static = {
-    findUserInfo: async (userName,userPwd) => {
+account.statics = {
+    findUserInfo: async function(userName,userPwd) {
         const userInfo = await this.findOne({name: userName}).exec();
+
         if(userInfo) {
             return userInfo.password == userPwd ? userInfo : null;
         } else {
             return null;
         }
     },
-    createUser: async (userName,userPwd,userInfo = {}) => {
+    createUser: async function(userName,userPwd,userInfo = {})  {
         const user = await this.findOne({name: userName}).exec();
         if(user){
             return null;
@@ -33,14 +34,6 @@ account.static = {
         }
 
     },
-
-    deposit: async (userId, method, amount) => {
-        return /**/
-    },
-
-    withdrawal: async (userId, amount) => {
-        return /**/
-    }
 }
 
 module.exports = mongoose.model('Account', account);
