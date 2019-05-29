@@ -1,26 +1,69 @@
-var Todo = require('./models/todo');
 var Product = require('./models/product')
 var Account = require('./models/accout')
 var Transaction = require('./models/transaction')
 
-function getTodos(res) {
-    Todo.find(function (err, todos) {
-
-        // if there is an error retrieving, send the error. nothing after res.send(err) will execute
-        if (err) {
-            res.send(err);
-        }
-
-        res.json(todos); // return all todos in JSON format
-    });
-};
-
 module.exports = function (app) {
 
     // api ---------------------------------------------------------------------
+    // signup
+    app.post('api/signup',function(req,res){
+        var username = req.body.userName;
+        var userPwd = req.body.userPwd;
+        if(userName == '' || userPwd == ''){
+            resData.code = 1;
+            resData.message = '用户名或密码不能为空';
+            res.json(resData);
+            return;
+        }
+        var result = Account.createUser(userName,userPwd);
+        if(result){
+            resdata.message = '注册成功';
+        }else {
+            resData.code = 2;
+            resdata.message = '该用户名已被注册，请更换用户名';
+        }
+        res.json(resdata);
+    })
+
     //login
     app.post('api/login',function(req,res){
+        var username = req.body.userName;
+        var userPwd = req.body.userPwd;
+        if(userName == '' || userPwd == ''){
+            resData.code = 1;
+            resData.message = '用户名或密码不能为空';
+            res.json(resData);
+            return;
+        }
+        //查询数据库验证用户名和密码
+        var userInfo = Account.findUserInfo(userName,userPwd);
+        if(!userInfo){
+            resData.code = 2;
+            resData.message = '用户名或密码错误';
+            res.json(resData);
+            return;
+        }
+        //验证通过则登录
+        resData.message = '登录成功';
+        resData.userInfo = {
+            _id: userInfo._id,
+            username: userInfo.name
+        };
+        //使用req.cookies的set方法把用户信息发送cookie信息给浏览器，浏览器将cookies信息保存，再次登录浏览器会将cookies信息放在头部发送给你服务端，服务端验证登录状态
+        req.cookies.set('userInfo',JSON.stringify({
+            _id: userInfo._id,
+            username: userInfo.name
+        }));
+        res.json(resData);
+        return;
 
+    })
+
+    //logout
+    app.get('/user/logout',function(req,res){
+        //请除cookie
+        req.cookies.set('userInfo',null);
+        res.json(resData);
     })
 
     //get userInfo 包括所有的存款投资金额，交易记录等个人首页的信息
@@ -40,7 +83,7 @@ module.exports = function (app) {
 
     //buyProduct
     app.post('api/buyProduct',function(req,res){
-        
+
     })
 
 

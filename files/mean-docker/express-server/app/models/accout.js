@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 // Define the schema
-var account = new mongoose.Schema({ accountId: String,//用户id
+var account = new Schema({ accountId: String,//用户id
     name: String,//用户名
     password: String,//密码
     telNumber: String,//电话
@@ -11,8 +12,26 @@ var account = new mongoose.Schema({ accountId: String,//用户id
 });
 
 account.static = {
-    findUserInfoById: async (userId) => {
-        return /**/
+    findUserInfo: async (userName,userPwd) => {
+        const userInfo = await this.findOne({name: userName}).exec();
+        if(userInfo) {
+            return userInfo.password == userPwd ? userInfo : null;
+        } else {
+            return null;
+        }
+    },
+    createUser: async (userName,userPwd,userInfo = {}) => {
+        const userInfo = await this.findOne({name: userName}).exec();
+        if(userInfo){
+            return null;
+        }else{
+            return this.create({
+            ...userInfo,
+            name: userName,
+            password: userPwd
+            });
+        }
+
     },
 
     deposit: async (userId, method, amount) => {
