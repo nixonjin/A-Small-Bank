@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><!-- Optimize mobile viewport -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="favicon.png">
+    <title>华方金融</title>
+    <!-- load angular -->
+    <script src="https://cdn.staticfile.org/angular.js/1.7.0/angular.min.js"></script>
+    <link rel="stylesheet" href="financial.css">
+   <!--  <script src="financial.js"></script> -->
+</head>
+
+<body ng-app="financialApp" ng-controller="financialMainController">
+    <div class="content">
+        <div class="page-wrapper">
+            <!-- left panel -->
+            <div class="left-panel">
+                <!-- left menu -->
+                <div class="hf-menu">
+                    <!-- logo bar -->
+                    <div class="top-bar">
+                        <a id="logo" href="../home/home.html?name={{name}}">
+                            <img class="icon-logo" alt="logo" src="imgs/HF@2x.png">
+                            <img class="icon-huafang" alt="华方金融" src="imgs/huafang@2x.png">
+                        </a>
+                    </div>
+                    <!-- main menu -->
+                    <div class="main-menu-inner">
+                        <ul>
+                            <!-- home page -->
+                            <li class="hf-menu-item">
+                                <a id="home" href="../home/home.html?name={{name}}">
+                                    <img src="imgs/icon-home@2x.png"> <span>个人首页</span>
+                                </a>
+                            </li>
+                            <!-- financial investment -->
+                            <li class="hf-menu-item active">
+                                <a id="financial" href="financial.html?name={{name}}">
+                                    <img src="imgs/icon-money@2x.png"> <span>理财投资</span>
+                                </a>
+                            </li>
+                            <!-- project funding -->
+                            <li class="hf-menu-item">
+                                <a id="project" href="">
+                                    <img src="imgs/icon-flag@2x.png"> <span>项目众筹</span>
+                                </a>
+                            </li>
+                            <!-- information management -->
+                            <li class="hf-menu-item">
+                                <a id="management" href="">
+                                    <img src="imgs/icon-setting@2x.png"> <span>信息管理</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- right panel -->
+            <div class="right-panel">
+                <!-- top head -->
+                <div class="header shadow-sm">
+                    <div class="user-center">
+                        <ul class="login">
+                            <li class="user">
+                                <!-- user name -->
+                                <div class="user-name">{{name}}</div>
+                                <!-- avatar -->
+                                <div class="avatar-container" onmouseover="showUserMenuList()"
+                                    onmouseout="closeUserMenuList()">
+                                    <a href="" class="user-list" id="head-logined-user-face">
+                                        <img src="imgs/avatar.png" alt="">
+                                    </a>
+                                </div>
+                                <!-- user menu list -->
+                                <div id="user-menu-list" onmouseover="showUserMenuList()"
+                                    onmouseout="closeUserMenuList()">
+                                    <div id="user-quit" class="user-box-list" onclick="userQuit()">
+                                        退出
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- <div style="width: 100%; height: 50%;"></div> -->
+                <div class="p-right-middle">
+                    <div class="block">
+                        <div class="investAndProfit">
+                            <div class="money">￥{{totalInvest}}</div>
+                            <div class="words">总投资</div>
+                        </div>
+                    </div>
+                    <div class="block" style="background-color: #F35157;">
+                        <div class="investAndProfit">
+                            <div class="money">￥{{totalProfit}}</div>
+                            <div class="words">总收益</div>
+                        </div>
+                    </div>
+                    <div class="record-block shadow-sm">
+                        <div class="record-block-row">
+                            <div class="record-block-title">近期投资记录</div>
+                        </div>
+                        <div class="record-block-row" style="height: 70%;">
+                            <table ng-repeat="r in investRecords">
+                                <tr><td>{{r.productName}}</td><td style="font-weight: bold;">{{r.money}}</td><td>{{r.time}}</td></tr>
+                                <!-- <tr><td>60天定期</td><td style="font-weight: bold;">+3,000.00</td><td>2019-5-27 01:18:05</td></tr>
+                                <tr><td>60天定期</td><td style="font-weight: bold;">-3,000.00</td><td>2019-5-27 01:18:05</td></tr> -->
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-right-bottom">
+                    <div class="product-block shadow-sm">
+                        <div class="product-block-title">
+                            60天定期
+                        </div>
+                        <div class="product-block-balance">
+                            账户余额
+                        </div>
+                        <div class="product-block-money">
+                            ￥{{totalInvestMoney}}
+                        </div>
+                        <div style="width: 100%; height: 25%;">
+                            <div style="width: 50%; height: 100%; float: left;">
+                                <div class="product-block-interest">
+                                    <div class="interest-words">七日年化</div>
+                                    <div class="interest">2.5260%</div>
+                                </div>
+                            </div>
+                            <div style="width: 50%; height: 100%; float: left;">
+                                <div style="margin: 10px;">
+                                    <div class="interest-words">累计收益</div>
+                                    <div class="interest">￥{{totalProfit}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="width: 100%; height: 30%;" align="center">
+                            <button class="save-btn ripple" id="saveMoneyBtn">转入</button>
+                            <button class="withdrawal-btn ripple" id="withdrawMoneyBtn">转出</button>
+                        </div>
+                    </div>
+                    <div class="input-money shadow-sm" id="saveMoneyDiv" ng-controller="saveMoneyController">
+                        <div class="input-money-title">请输入转入金额大小</div>
+                        <div class="input-money-body" align="center">
+                            请输入金额大小：<input type="text" name="saveMoney" ng-model="saveMoneyAmount"/>
+                        </div>
+                        <div style="width: 100%; height: 33%;" align="center">
+                            <button class="input-money-cancel-btn ripple" id="saveMoneyCancel">取消</button>
+                            <button class="input-money-confirm-btn ripple" id="saveMoneyConfirm" ng-click="onSaveMoneyConfirm">确定</button>
+                        </div>
+                    </div>
+                    <div class="input-money shadow-sm" id="withdrawMoneyDiv" ng-controller="withdrawMoneyController">
+                        <div class="input-money-title">请输入转出金额大小</div>
+                        <div class="input-money-body" align="center">
+                            请输入金额大小：<input type="text" name="withdrawMoney" ng-model="withdrawMoneyAmount"/>
+                        </div>
+                        <div style="width: 100%; height: 33%;" align="center">
+                            <button class="input-money-cancel-btn ripple" id="withdrawMoneyCancel">取消</button>
+                            <button class="input-money-confirm-btn ripple" id="withdrawMoneyConfirm" ng-click="onWithdrawMoneyConfirm">确定</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="financial.js"></script>
+</body>
+
+</html>

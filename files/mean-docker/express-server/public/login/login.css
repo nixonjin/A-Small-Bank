@@ -1,0 +1,150 @@
+ /* 背景样式 */
+#bkgd{
+    background-image:url(images/login-bg.png);
+    background-repeat:no-repeat;
+    position:fixed;
+    top: 0;
+    left: 0;
+    width:100%;
+    height:100%;
+    background-size: cover;
+    min-width: 1365px;
+    z-index:-10;
+}
+
+/* 顶部标题样式 */
+#top{
+    display: block;
+    padding-left:32px;
+    padding-top:20px;
+    height:64px;
+}
+
+#logo{
+    display: inline-block;
+    vertical-align: middle;
+    font-size:0;
+}
+
+/* 中部 */
+#middle{
+    width: 100%;
+    height: 650px;
+}
+
+/* 中左 */
+#middle-left{
+    height:100%;
+    width:60%;
+    float:left;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* 中左文本 */
+#left-text{
+    width:450px;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    text-align: left;
+    line-height: 2em;
+    letter-spacing: 2px;
+}
+
+#left-head{
+    font-size: 40px;
+}
+
+#left-content{
+    font-size: 20px;
+}
+
+/* 中右 */
+#middle-right{
+    height:100%;
+    width:40%;
+    float:right;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* 登录框 */
+#login-box{
+    width: 380px;
+    height: 440px;
+    background-color: #ffffff;
+    box-shadow: darkgrey 0px 0px 5px; 
+    border-radius: 10;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+#login-title{
+    font-size: 20px;
+    font-family: '.PingFang SC', sans-serif;
+    color: #282D31;
+}
+
+#select-input{
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-family: Arial,sans-serif;
+    color:#6D7174;
+}
+
+/* 文本输入框外层边框 */
+#input-box{
+    margin-top: 5px;
+    width:100%;
+    height:40px;
+    border: 1px solid #CBCBCB;
+    border-radius: 5px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* 文本输入框样式 */
+#an-input{
+    margin-left:5px;
+    float:left;
+    width:87%;
+    height: 34px;
+    border:0px;
+    font-size: 20px;
+}
+
+/* 登录按钮样式 */
+#login-button{
+    width:100%;
+    height:40px;
+    margin-top: 30px;
+    background-color: #2295FF;
+    border-radius: 5px;
+    border:0px;
+    font-size:18px;
+    font-family: 'Segoe UI', sans-serif;
+    color:#ffffff;
+}
+
+/* 用户名密码无效提示样式 */
+#invalid-alert{
+    /*padding-top: 5px;*/
+    font-size:16px;
+    color:#6D7174;
+}
+
+/* 注册按钮样式 */
+#register-button{
+    margin-top:30px;
+    float:right;
+    width:118px;
+    height:40px;
+    color:#2295FF;
+    font-size: 16px;
+    background-color: #ffffff;
+    border: 1px solid #2295FF;
+    border-radius: 5px;
+}

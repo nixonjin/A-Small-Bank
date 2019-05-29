@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>华方金融平台登录页</title>
+        <script src="https://cdn.staticfile.org/angular.js/1.7.0/angular.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="login.css"><!-- 引入CSS文件 -->
+    </head>
+    <body>
+        <!-- 背景 -->
+        <div id="bkgd"></div>
+        <!-- 顶部 -->
+        <div id="top">
+            <a id="logo" href="login.html">
+                <img src="images/HF.png" id="logo" style="height:24px">
+                &nbsp;&nbsp;
+                <img src="images/huafang.png" id="logo" style="height: 33px; padding-left: 8px">
+            </a>
+        </div>
+        <!-- 中部主体 -->
+        <div id="middle">
+            <!-- 中左 -->
+            <div id="middle-left">
+                <div id="left-text">
+                    <h1 id="left-head">欢迎来华方金融平台</h1>
+                    <p id="left-content">
+                        我们旨在为每一个创业梦想提供资金筹备<br>
+                        在这里你可以管理资金、理财投资<br>
+                        发布你的创业项目吸引大众投资<br>
+                        寻找你感兴趣的项目进行投资
+                    </p>
+                </div>
+            </div>
+            <!-- 中右 -->
+            <div id="middle-right" ng-app="loginApp">
+                <!-- 登录 -->
+                <div id="login-box" ng-controller="loginCtrl">
+                    <h2 id="login-title">登录</h2>
+                    <!-- 登录表单 -->
+                    <form>
+                        <div id="select-input">
+                            用户名<br>
+                            <div id="input-box">
+                                <img src="images/user.png">
+                                <!-- 用户名输入框 -->
+                                <input type="text" id="an-input" ng-model="userName">
+                            </div>
+                        </div>
+                        <div id="select-input">
+                            密码<br>
+                            <div id="input-box"> 
+                                <img src="images/pass.png">
+                                <!-- 密码输入框 -->
+                                <input type="password" id="an-input" ng-model="userPwd">
+                            </div>
+                        </div>
+                        <!-- 用户名密码错误提示 -->
+                        <span id="invalid-alert" ng-hide="isValid">用户名或密码错误，请重新输入</span>
+                        <!-- 登录按钮 -->
+                        <button id="login-button" ng-click="login()">登录</button>
+                    </form>
+                    <!-- 注册按钮（链接？） -->
+                    <div style="width: 100%; height: 20%;">
+                        <span style="font: 20px 'Arial'; line-height: 4.7em; color: #6D7174;">忘记密码？</span>
+                        <button id="register-button">注册</button>
+                    </div>
+                </div>
+            </div>
+        </div>  
+        <script type="text/javascript" src="login.js"></script>
+    </body>
+</html>
+
