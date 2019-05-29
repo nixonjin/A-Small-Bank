@@ -21,8 +21,8 @@ account.static = {
         }
     },
     createUser: async (userName,userPwd,userInfo = {}) => {
-        const userInfo = await this.findOne({name: userName}).exec();
-        if(userInfo){
+        const user = await this.findOne({name: userName}).exec();
+        if(user){
             return null;
         }else{
             return this.create({
