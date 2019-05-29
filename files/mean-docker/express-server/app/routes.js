@@ -77,20 +77,29 @@ module.exports = function (app) {
 
     //logout
     app.get('/api/logout',function(req,res){
-        //请除cookie
+        //清除cookie
         console.log('登出成功');
         var resData={
             code: 0,
             message: ''
         };
-        resData.message = '登出成功';
         req.cookies.set('userInfo',null);
+        resData.message = '登出成功';
         res.json(resData);
     })
 
     //get userInfo 包括所有的存款投资金额，交易记录等个人首页的信息
-    app.get('api/userInfo',function(req,res){
+    app.post('/api/userInfo',async function(req,res){
+        var userId = req.body._id;
 
+        Account.products.push(Product);
+        var userInfo = await Account.findUserInfo(userId);
+
+        var transactions = await Transaction.findTsById(userId);
+
+        userInfo.transactions = transactions;
+
+        res.json(userInfo);
     })
 
     //deposit

@@ -10,5 +10,7 @@ var product = new Schema({
     buyers:[{type:Schema.Types.ObjectId,ref:'account'}]
 });
 
+product.statics = {
+    find async function(userName,userPwd) {
 
 module.exports = mongoose.model('Product',product);

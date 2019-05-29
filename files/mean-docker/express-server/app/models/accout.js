@@ -12,16 +12,7 @@ var account = new Schema({ accountId: String,//用户id
 });
 
 account.statics = {
-    findUserInfo: async function(userName,userPwd) {
-        const userInfo = await this.findOne({name: userName}).exec();
-
-        if(userInfo) {
-            return userInfo.password == userPwd ? userInfo : null;
-        } else {
-            return null;
-        }
-    },
-    createUser: async function(userName,userPwd,userInfo = {})  {
+    createuser: async function(username,userpwd,userinfo = {})  {
         const user = await this.findOne({name: userName}).exec();
         if(user){
             return null;
@@ -32,6 +23,24 @@ account.statics = {
             password: userPwd
             });
         }
+
+    },
+    findUserInfo: async function(userName,userPwd) {
+        const userInfo = await this.findOne({name: userName}).exec();
+
+        if(userInfo) {
+            return userInfo.password == userPwd ? userInfo : null;
+        } else {
+            return null;
+        }
+    },
+    findUserInfo: async function(userId) {
+        //const userInfo = await this.findOne({_id userId}).exec();
+        const userInfo = awai this.find({_id:userId}).populate('products').exec();
+
+        if(!userInfo)   return null;
+
+        return userInfo;
 
     },
 }
