@@ -1,0 +1,16 @@
+{
+  "name": "node-small-bank",
+  "version": "0.0.1",
+  "description": "Simple bank application.",
+  "repository": "",
+  "license": "MIT",
+  "main": "server.js",
+  "author": "ABC",
+  "dependencies": {
+    "body-parser": "^1.4.3",
+    "express": "^4.13.4",
+    "method-override": "^2.1.3",
+    "mongoose": "^4.4.12",
+    "morgan": "^1.1.1"
+  }
+}
