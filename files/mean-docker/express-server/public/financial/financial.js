@@ -118,9 +118,9 @@ financialApp.controller('saveMoneyController', function($scope){
                 "productName": "60天定期", //产品名
                 "saveMoneyAmount": $scope.saveMoneyAmount, //转入金额大小
                 "time": formatTime(new Date()),
-            }          
+            }
         }).then(function success(res) {
-            console.log(res); 
+            console.log(res);
         }, function error(res){
             console.log(res);
         });
@@ -135,11 +135,11 @@ financialApp.controller('withdrawMoneyController', function($scope){
             data: {
                 "name": currentUserName,
                 "productName": "60天定期", //产品名
-                "withdrawMoneyAmount": $scope.withdrawMoneyAmount, //转入金额大小
+                "withdrawMoneyAmount": $scope.withdrawMoneyAmount, //转出金额大小
                 "time": formatTime(new Date()),
-            }          
+            }
         }).then(function success(res) {
-            console.log(res); 
+            console.log(res);
         }, function error(res){
             console.log(res);
         });
