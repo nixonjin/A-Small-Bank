@@ -4,14 +4,11 @@ var Account = require('./models/accout');
 var Transaction = require('./models/transaction');
 var ProductRecord = require('./models/productRecord');
 
-
 module.exports = function (app) {
 
     // api ---------------------------------------------------------------------
     // signup
     app.post('/api/signup', async function (req, res) {
-        console.log('begin sign up');
-        //console.log(req.body.userName)
         var userName = req.body.userName;
         var userPwd = req.body.userPwd;
         var resData = {
@@ -68,7 +65,7 @@ module.exports = function (app) {
             _id: userInfo._id,
             username: userInfo.name
         };
-        //使用req.cookies的set方法把用户信息发送cookie信息给浏览器，浏览器将cookies信息保存，再次登录浏览器会将cookies信息放在头部发送给你服务端，服务端验证登录状态
+        //使用req.cookies的set方法把用户信息发送cookie信息给浏览器，浏览器将cookies信息保存，再次登录浏览器会将cookies信息放在头部发送给服务端，服务端验证登录状态
         req.cookies.set('userInfo', JSON.stringify({
             _id: userInfo._id,
             username: userInfo.name
@@ -94,16 +91,40 @@ module.exports = function (app) {
 
     //get userInfo 包括所有的存款投资金额，交易记录等个人首页的信息
     app.post('/api/userInfo', async function (req, res) {
-        var userId = req.body._id;
+        var userName = req.body.name;
 
-        // Account.products.push(Product);
-        var userInfo = await Account.findUserAllInfo(userId);
+        var userInfo = await Account.findUserAllInfo(userName);
 
-        // var transactions = await Transaction.findTsById(userId);
+        var records = await Transaction.findTsByName(userName);
 
-        // userInfo.transactions = transactions;
+        var monthTExpend = 0;
+        var monthTIncome = 0;
+        var currentDate = new Date();
 
-        res.json(userInfo);
+
+        await records.map(function(record,index){
+            if(record.GMTtime.getFullYear()==currentDate.getFullYear()&&record.GMTtime.getMonth()==currentDate.getMonth()){
+                //交易类型：取款，存款，转入，转出，买入，卖出
+                if(record.type=='取款'||record.type=='转出'){
+                    monthTExpend += record.money;
+                }
+                if(record.type=='存款'||record.type=='转入'){
+                    monthTIncome += record.money;
+                }
+            }
+        })
+
+        var resData = {
+            name: userInfo.name,//用户名
+            telNumber: userInfo.telNumber,//电话
+            property: userInfo.property,//存款
+            investAmount: userInfo.investAmount,
+            monthTExpend: monthTExpend,
+            monthTIncome: monthTIncome,
+            records: records,
+        }
+
+        res.json(resData);
     })
 
 
@@ -117,7 +138,8 @@ module.exports = function (app) {
             }
             else {
                 console.log(docs + "1");
-                docs.property = parseInt(docs.property) + req.body.saveMoneyAmount;
+                docs.property = docs.property + parseInt(req.body.saveMoneyAmount);
+                //console.log(typeof req.body.saveMoneyAmount)
                 docs.save(function (err, docs) {
                     if (err) console.log(err);
                     else console.log("2");

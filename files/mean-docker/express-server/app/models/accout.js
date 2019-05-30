@@ -38,9 +38,9 @@ account.statics = {
             return null;
         }
     },
-    findUserAllInfo: async function(userId) {
+    findUserAllInfo: async function(userName) {
         //const userInfo = await this.findOne({_id userId}).exec();
-        const userInfo = await this.find({_id:userId}).populate('products').exec();
+        const userInfo = await this.findOne({name: userName}).exec();
 
         if(!userInfo)   return null;
 
