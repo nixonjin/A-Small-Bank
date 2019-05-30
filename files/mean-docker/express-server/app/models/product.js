@@ -1,8 +1,9 @@
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 // Define the schema
-var product = new mongoose.Schema({
-    productId: mongoose.Schema.Types.ObjectId,//产品id
+var product = new Schema({
+    productId: Schema.Types.ObjectId,//产品id
     name: String,//产品名称
     time: Number,//持续天数
     profit: Number,//利率
