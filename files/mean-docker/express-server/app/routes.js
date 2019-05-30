@@ -24,7 +24,7 @@ module.exports = function (app) {
             res.json(resData);
             return;
         }
-        var result = await Account.createUser(userName,userPwd)
+        var result = await Account.createUser(userName,userPwd);
         if(result){
             console.log('注册成功');
             resData.message = '注册成功';
