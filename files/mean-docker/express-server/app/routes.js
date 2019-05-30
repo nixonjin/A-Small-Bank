@@ -10,7 +10,7 @@ module.exports = function (app) {
     // signup
     app.post('/api/signup',async function(req,res){
         console.log('begin sign up');
-
+        console.log(req.body.userName)
         var userName = req.body.userName;
         var userPwd = req.body.userPwd;
         var resData={
@@ -95,19 +95,19 @@ module.exports = function (app) {
     app.post('/api/userInfo',async function(req,res){
         var userId = req.body._id;
 
-        Account.products.push(Product);
+        // Account.products.push(Product);
         var userInfo = await Account.findUserAllInfo(userId);
 
-        var transactions = await Transaction.findTsById(userId);
+        // var transactions = await Transaction.findTsById(userId);
 
-        userInfo.transactions = transactions;
+        // userInfo.transactions = transactions;
 
         res.json(userInfo);
     })
 
 
     //deposit
-    app.post('api/deposit', async function (req, res) {
+    app.post('/api/deposit', async function (req, res) {
 
         let property = 0;
         await Account.find({name: req.body.name}, function (err, docs) {
@@ -128,7 +128,7 @@ module.exports = function (app) {
     });
 
     //withdraw
-    app.get("api/withdraw",async function(req,res){
+    app.get("/api/withdraw",async function(req,res){
         //withdraw
         var conditions = {name: req.body.name};
         let preProperty=0;
@@ -156,7 +156,7 @@ module.exports = function (app) {
 
     //buyProduct
 
-    app.post('api/buyProduct',async function(req,res){
+    app.post('/api/buyProduct',async function(req,res){
         let product =null;
         await  Product.findOne({name:req.body.productName},function (err,docs) {
             if(err) console.log("error");
@@ -174,9 +174,9 @@ module.exports = function (app) {
                 console.log(product);
             }
         });
-        await Account.find({name:req.body.name},function (err,docs) {
+        await Account.findOne({name:req.body.name},function (err,docs) {
           if(err)console.log("error");
-          docs.product.push(product);
+          docs[0].products.push(product);
         });
 
         await Transaction.create({
@@ -195,7 +195,7 @@ module.exports = function (app) {
     });
 
     //sellProduct
-    app.post('api/sellProduct',async function (req,res){
+    app.post('/api/sellProduct',async function (req,res){
             let product =null;
             await  Product.findOne({name:req.body.productName},function (err,docs) {
                 if(err) console.log("error");
@@ -239,7 +239,7 @@ module.exports = function (app) {
 
 
     //转账
-    app.post("api/transfer", async function (req, res) {
+    app.post("/api/transfer", async function (req, res) {
         let session = mongoose.startSession({readPreference: {mode: "primary"}});
         let preProperty1 = 0,preProperty2=0;
         await Account.find({name: req.body.name}, function (err, dosc) {

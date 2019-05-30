@@ -14,7 +14,7 @@ var account = new Schema({
 });
 
 account.statics = {
-    createuser: async function(username,userpwd,userinfo = {})  {
+    createUser: async function(username,userpwd,userinfo = {})  {
         const user = await this.findOne({name: userName}).exec();
         if(user){
             return null;
