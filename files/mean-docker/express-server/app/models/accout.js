@@ -4,17 +4,19 @@ var Schema = mongoose.Schema;
 // Define the schema
 
 var account = new Schema({
-    accountId: Schema.Types.ObjectId,//用户id
     name: String,//用户名
     password: String,//密码
     telNumber: String,//电话
-    property: { type: Number, min: 0, default: 0 },//定期存款
-    products:[{type:mongoose.Schema.Types.ObjectId,ref:'product'}]
+    property: { type: Number, min: 0, default: 0 },//存款
+    investAmount:{ type: Number, min: 0, default: 0 },
+    // products:[{type:mongoose.Schema.Types.ObjectId,ref:'product'}]
+    products:[]
     // huoqiProperty: { type: Number, min: 0, default: 0 }//活期存款
 });
 
 account.statics = {
-    createUser: async function(username,userpwd,userinfo = {})  {
+    createUser: async function(userName,userPwd,userInfo = {})  {
+        console.log(userName);
         const user = await this.findOne({name: userName}).exec();
         if(user){
             return null;

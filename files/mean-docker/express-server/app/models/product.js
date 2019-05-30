@@ -3,11 +3,11 @@ var Schema = mongoose.Schema;
 
 // Define the schema
 var product = new Schema({
-    productId: Schema.Types.ObjectId,//产品id
     name: String,//产品名称
+    money:Number,//产品价格
     time: Number,//持续天数
     profit: Number,//利率
-    buyers:[{type:mongoose.Schema.Types.ObjectId,ref:'account'}]
+    // buyers:[{type:mongoose.Schema.Types.ObjectId,ref:'account'}]
 });
 
 
