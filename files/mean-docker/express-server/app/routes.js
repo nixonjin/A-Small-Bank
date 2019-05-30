@@ -95,10 +95,15 @@ module.exports = function (app) {
     app.post('/api/userInfo',async function(req,res){
         var userId = req.body._id;
 
-        Account.products.push(Product);
+        //Account.products.push(Product);
         var userInfo = await Account.findUserAllInfo(userId);
+        console.log('account------------------------')
+        console.log(userInfo);
 
-        var transactions = await Transaction.findTsById(userId);
+
+        var transactions = await Transaction.findTsByName(userinfo.name);
+        console.log('transactions----------------------------------------');
+        console.log(transactions);
 
         userInfo.transactions = transactions;
 
@@ -156,11 +161,13 @@ module.exports = function (app) {
 
     //buyProduct
 
-    app.post('api/buyProduct',async function(req,res){
+    app.post('/api/buyProduct',async function(req,res){
         let product =null;
         await  Product.findOne({name:req.body.productName},function (err,docs) {
             if(err) console.log("error");
             if(!docs){
+            console.log('docs----------------------------------------');
+            console.log(docs);
                 Product.create({
                     productId: new mongoose.Schema.Types.ObjectId(),//产品id
                     name: req.body.productName,//产品名称
@@ -176,18 +183,19 @@ module.exports = function (app) {
         });
         await Account.find({name:req.body.name},function (err,docs) {
           if(err)console.log("error");
-          docs.product.push(product);
+          docs[0].products.push(product);
         });
 
         await Transaction.create({
-            recordId: new mongoose.Schema.Types.ObjectId(),//记录id
             mainAccountName: req.body.name,//用户id
             type: 4,//操作类型，只有定期存款，活期存款，取出，转账四种
             secondAccountName: null,//如果是转账则记录目标账户的id
             money: req.body.saveMoneyAmount,//金额
             time: req.body.time//日期
         },function (err,docs){
-            if(err)console.log("err");
+            //console.log('docs----------------------------------------');
+            //console.log(docs);
+            if(err)console.log(err);
         }
         );
         res.status=200;

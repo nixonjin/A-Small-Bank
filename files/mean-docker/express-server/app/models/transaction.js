@@ -3,8 +3,7 @@ var Schema = mongoose.Schema;
 
 // Define the schema
 
-var transactioin = new Schema ({
-        recordId: Schema.Types.ObjectId,//记录id
+var transaction = new Schema ({
         mainAccountName: String,//用户id
         type: Number,//操作类型，只有定期存款，活期存款，取出，转账四种
         secondAccountName: String,//如果是转账则记录目标账户的id
@@ -13,9 +12,9 @@ var transactioin = new Schema ({
 })
 
 transaction.statics = {
-    findTsById: async function(userId)  {
-        var result1 = await this.find({mainAccountId: userId}).exec();
-        var result2 = await this.find({secondAccountId: userId}).exec();
+    findTsByName: async function(userId)  {
+        var result1 = await this.find({mainAccountName: userName}).exec();
+        var result2 = await this.find({secondAccountName: userName}).exec();
         mergeJSON(result2,result1);
         return result1;
 

@@ -9,7 +9,7 @@ var account = new Schema({
     password: String,//密码
     telNumber: String,//电话
     property: { type: Number, min: 0, default: 0 },//定期存款
-    products:[{type:mongoose.Schema.Types.ObjectId,ref:'product'}]
+    products:[{type:Schema.Types.ObjectId,ref:'product'}]
     // huoqiProperty: { type: Number, min: 0, default: 0 }//活期存款
 });
 

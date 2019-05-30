@@ -7,7 +7,7 @@ var product = new Schema({
     name: String,//产品名称
     time: Number,//持续天数
     profit: Number,//利率
-    buyers:[{type:mongoose.Schema.Types.ObjectId,ref:'account'}]
+    buyers:[{type:Schema.Types.ObjectId,ref:'account'}]
 });
 
 
