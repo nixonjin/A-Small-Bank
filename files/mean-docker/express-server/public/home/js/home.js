@@ -1,4 +1,4 @@
-let address = 'http://127.0.0.1:8080'; //IP address
+let address = 'http://148.100.86.241:8082'; //IP address
 // 弹出窗口控制（不用改动）
 // recharge panel
 function popRechargePanel(){

@@ -1,4 +1,4 @@
-let address = 'http://127.0.0.1:8080';
+let address = 'http://148.100.86.241:8082';
 var app = angular.module('loginApp', []);
 app.controller('loginCtrl',function($scope, $http){
     $scope.isValid = true;

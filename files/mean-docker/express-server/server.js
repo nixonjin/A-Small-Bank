@@ -2,7 +2,7 @@
 var express = require('express');
 var app = express(); 						// create our app w/ express
 var mongoose = require('mongoose'); 				// mongoose for mongodb
-var port = process.env.PORT || 8080; 				// set the port
+var port = process.env.PORT || 8082; 				// set the port
 var database = require('./config/database'); 			// load the database config
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
@@ -11,7 +11,7 @@ var Cookies = require('cookies'); //加载cookies模块
 
 // configuration ===============================================================
 //mongoose.connect(database.localUrl); 	// Connect to local MongoDB instance. A remoteUrl is also available (modulus.io)
-mongoose.connect('mongodb://localhost/bank');
+mongoose.connect(database.localUrl);
 
 
 

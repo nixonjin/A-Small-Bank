@@ -1,4 +1,4 @@
-let address = 'http://127.0.0.1:8080';
+let address = 'http://148.100.86.241:8082';
 // user menu list
 function showUserMenuList(){
     var menuList = document.getElementById("user-menu-list");
