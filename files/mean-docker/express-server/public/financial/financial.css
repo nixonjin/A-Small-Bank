@@ -3,7 +3,7 @@ html,body{
     margin: 0;
     padding: 0;
     /* min-width: 1220px; */
-    min-width: 1000px;
+    min-width: 1100px;
     min-height: 400px;
     /* 取消滑动条 */
     overflow: hidden;
@@ -18,7 +18,19 @@ body{
     -webkit-transition: background 1s cubic-bezier(.075, .82, .165, 1);
     transition: background 1s cubic-bezier(.075, .82, .165, 1);
 }
+/* 表格滑动条样式 */
+table tbody::-webkit-scrollbar{width: 3px;}
+table tbody::-webkit-scrollbar-track{background-color:#fff;}
+table tbody::-webkit-scrollbar-thumb{background-color:#CCCCCC;}
+table tbody::-webkit-scrollbar-thumb:hover {background-color:#CCCCCC;}
+table tbody::-webkit-scrollbar-thumb:active {background-color:#CCCCCC;}
 /* 取消button默认样式 */
+button{
+    margin: 0;
+    padding: 0;
+    border: 1px solid transparent;
+    outline: none;
+}
 a{
     text-decoration: none;
 }
@@ -203,40 +215,46 @@ ul{
 }
 
 .p-right-middle{
-    width: 1675px;
-    height: 300px;
+    /* width: 1675px; */
+    width: calc(100% - 20px);
+    padding: 10px;
+    height: 200px;
     /*background-color: blue;*/
 }
 .investAndProfit{
-    width: 30%;
+    width: 70%;
     height: 100%;
     padding-left: 30px;
     padding-top: 50px;
 }
 .money{
-    font: 52px 'Arial';
+    font-size: 40px;
     color: white;
 }
 .words{
-    font: 24px 'Arial';
+    font-size: 18px;
     color: white;
 }
-.p-right-bottom{
-    width: 1675px;
-    height: 584px;
-}
 .block{
-    margin: 20px;
+    margin: 10px;
     background-color: #6E42FF;
-    height: 80%;
-    width: 24%;
+    height: calc(100% - 20px);
+    width: calc(25% - 20px);
     float: left;
     border-radius: 8px;
 }
+.totalInvest{
+    background: linear-gradient(#6A45E5,#6E42FF);
+    box-shadow: 0 1px 10px rgba(110, 66, 255, 0.466);
+}
+.totalProfit{
+    background: linear-gradient(#F96268,#F35157);
+    box-shadow: 0 1px 10px rgba(243, 81, 86, 0.466);
+}
 .record-block{
-    margin: 20px;
-    width: 44%;
-    height: 80%;
+    margin: 10px;
+    width: calc(50% - 20px);
+    height: calc(100% - 20px);
     float: left;
     border-radius: 8px;
     background-color: white;
@@ -249,7 +267,22 @@ ul{
     margin-top: 10px;
     margin-left: 20px;
     padding: 5px;
-    font: 22px 'Arial';
+    font-size: 20px;
+}
+table{
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    font-size: 18px;
+    /* max-height: 100px; */
+}
+table tbody{
+    display: block;
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: calc(100% - 5px);
+    /* min-height: 147px; */
 }
 tr{
     height: 38px;
@@ -257,12 +290,17 @@ tr{
 }
 td{
     width: 242px;
-    font: 22px 'Arial';
     color: grey;
     text-align: center;
 }
 tr:nth-child(odd){
     background-color: #F6F7FB;
+}
+
+.p-right-bottom{
+    width: calc(100% - 20px);
+    height: calc(100vh - 290px);
+    min-height: 410px;
 }
 .product-block{
     margin: 20px;
@@ -275,37 +313,40 @@ tr:nth-child(odd){
 }
 .product-block-title{
     width: 100%;
-    height: 18%;
-    font: 32px 'Arial';
+    /* height: 18%; */
+    font-size: 30px;
     text-align: center;
-    line-height: 3em;
+    line-height: 2em;
 }
 .product-block-balance{
     width: 100%;
-    height: 7%;
-    font: 20px 'Arial';
+    margin-top: 10px;
+    /* height: 7%; */
+    font-size: 16px;
     color: #6D7174;
     text-align: center;
 }
 .product-block-money{
+    margin-bottom: 10px;
     width: 100%;
-    height: 12%;
-    font: bold 48px 'Arial';
+    /* height: 12%; */
+    font-size: 40px;
+    font-weight: bold;
     text-align: center;
 }
 .product-block-interest{
-    margin: 10px;
-    border-right: 1px solid #6D7174;
+    /* margin: 10px; */
+    border-right: 1px solid #DFDFDF;
 }
 .interest-words{
-    font: 24px 'Arial';
+    font-size: 16px;
     color: #6D7174;
     text-align: center;
     padding-top: 2px;
-    padding-bottom: 10px;
+    padding-bottom: 5px;
 }
 .interest{
-    font: 32px 'Arial';
+    font-size: 20px;
     color: black;
     text-align: center;
     padding-top: 5px;
@@ -314,7 +355,7 @@ tr:nth-child(odd){
     height: 40%;
     width: 50%;
     background-color: #F9C700;
-    font: 26px 'Arial';
+    font-size: 20px;
     color: white;
     border: none;
     border-radius: 8px;
@@ -325,10 +366,77 @@ tr:nth-child(odd){
     border: 1px solid #F9C700;
     background-color: white;
     margin-top: 15px;
-    font: 26px 'Arial';
+    font-size: 20px;
     color: #F9C700;
     border-radius: 8px;
 }
+.pop-page{
+    display: none;
+}
+#popLayer{
+    /* display: none; */
+    background-color: #B3B3B3;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 15;
+    -moz-opacity: 0.8;
+    opacity: 0.80;
+    filter: alpha(opacity=80);/*proprietary IE code */
+}
+.popPanel{
+    width: 380px;
+    height: 440px;
+    z-index: 50;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    margin: auto;
+    background-color: #fff;
+    border-radius: 5px;
+}
+.pop-page button{
+    text-align: center;
+    height: 40px;
+    width: 30%;
+    background-color: #2295FF;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    margin: 30px;
+}
+.pop-page .close-popPanel{
+    background-color: #F35157;
+}
+.panel-title{
+    margin-top: 20px;
+    margin-bottom: 95px;
+    font-size: 20px;
+    text-align: center;
+}
+.pop-page input{
+    outline-style: none;
+    width: 80%;
+    margin: 0 auto;
+    display: block;
+    border: 1px solid #CBCBCB;
+    border-radius: 5px;
+    font-size: 20px;
+    margin-bottom: 40px;
+    padding: 5px 10px;
+}
+.pop-page input:focus{
+    border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+}
+
 .input-money{
     width: 25%;
     height: 35%;
@@ -372,3 +480,4 @@ tr:nth-child(odd){
     background-color: #F35157;
     border-radius: 5px;
 }
+

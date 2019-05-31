@@ -344,6 +344,9 @@ table tbody::-webkit-scrollbar-thumb:active {background-color:#CCCCCC;}
     display: table;
     table-layout: fixed;
 }
+tr:nth-child(even){
+    background-color: #F6F7FB;
+}
 
 /* preview table */
 .preview-table{

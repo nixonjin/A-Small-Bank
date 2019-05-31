@@ -3,7 +3,7 @@ var Product = require('./models/product');
 var Account = require('./models/accout');
 var Transaction = require('./models/transaction');
 var ProductRecord = require('./models/productRecord');
-
+var Time= require('./util');
 module.exports = function (app) {
 
     // api ---------------------------------------------------------------------
@@ -102,6 +102,15 @@ module.exports = function (app) {
         var currentDate = new Date();
 
 
+        let temp = [];
+        // for(let i = 0; i < records.length; i++){
+        //     let time = formatTime(records[i].GMTtime);
+        //     temp.push({
+        //         type: records[i].type,
+        //         money: records[i].money,
+        //         time: time,
+        //     })
+        // }
         await records.map(function(record,index){
             if(record.GMTtime.getFullYear()==currentDate.getFullYear()&&record.GMTtime.getMonth()==currentDate.getMonth()){
                 //交易类型：取款，存款，转入，转出，买入，卖出
@@ -112,17 +121,27 @@ module.exports = function (app) {
                     monthTIncome += record.money;
                 }
             }
+
+            let time = Time.formatTime(record.GMTtime);
+            temp.push({
+                type: record.type,
+                money: record.money,
+                time: time,
+            })
         })
 
         var resData = {
             name: userInfo.name,//用户名
             telNumber: userInfo.telNumber,//电话
-            property: userInfo.property,//存款
-            investAmount: userInfo.investAmount,
+            balance: userInfo.property,//存款
+            totalInvestMoney: userInfo.investAmount,
             monthTExpend: monthTExpend,
             monthTIncome: monthTIncome,
-            records: records,
+            records: temp,
         }
+        console.log(resData);
+        console.log("     ---------------------")
+        console.log(resData.records);
 
         res.json(resData);
     })
@@ -169,6 +188,19 @@ module.exports = function (app) {
         );
         res.status = 200;
         res.json({ msg: "success" });
+
+        console.log("------------------------------------------")
+        console.log("Account");
+        await Account.find({ "name": req.body.name }, function (err, docs) {
+            console.log(docs);
+        })
+        
+        console.log("------------------------------------------")
+        console.log("Account");
+        await Transaction.find({ "mainAccountName": req.body.name }, function (err, docs) {
+            console.log(docs);
+        })
+
     });
 
     //withdraw
@@ -469,8 +501,20 @@ module.exports = function (app) {
     });
 
     // application -------------------------------------------------------------
-    app.get('*', function (req, res) {
-
-        res.sendFile(__dirname + '/public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
+    app.get('/login/', function (req, res) {
+        res.sendFile(__dirname.slice(0,-4) + '/public/login/login.html'); // load the single view file (angular will handle the page changes on the front-end)
     });
+
+    app.get('/home/', function (req, res) {
+        res.sendFile(__dirname.slice(0,-4) + '/public/home/home.html'); // load the single view file (angular will handle the page changes on the front-end)
+    });
+
+    app.get('/financial/', function (req, res) {
+        res.sendFile(__dirname.slice(0,-4) + '/public/financial/financial.html'); // load the single view file (angular will handle the page changes on the front-end)
+    });
+
+    app.get('*', function (req, res) {
+        res.sendFile(__dirname.slice(0,-4) + '/public/login/login.html'); // load the single view file (angular will handle the page changes on the front-end)
+    });
+    
 };

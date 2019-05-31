@@ -1,3 +1,4 @@
+let address = 'http://127.0.0.1:8080';
 // user menu list
 function showUserMenuList(){
     var menuList = document.getElementById("user-menu-list");
@@ -13,7 +14,7 @@ function closeUserMenuList(){
 }
 // 用户退出
 function userQuit(){
-    window.location.href="../login/login.html";
+    window.location.href = address + "/login";
 }
 
 var saveMoneyBtn = document.getElementById('saveMoneyBtn');
@@ -75,6 +76,7 @@ let currentUserName = '';
 
 var financialApp = angular.module("financialApp", []);
 financialApp.controller("financialMainController", function($scope) {
+    $scope.IPAddress = address;
     let param = window.location.search;
     let name = param.substring(6, param.length); //从url中得到用户名
     currentUserName = name;

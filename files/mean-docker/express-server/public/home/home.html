@@ -10,6 +10,7 @@
     <!-- load angular -->
     <script src="https://cdn.staticfile.org/angular.js/1.7.0/angular.min.js"></script>
     <link rel="stylesheet" href="css/home.css">
+    <script src="js/home.js"></script>
 </head>
 
 <body ng-app="homeApp" ng-controller="homeMainController">
@@ -21,7 +22,7 @@
                 <div class="hf-menu">
                     <!-- logo bar -->
                     <div class="top-bar">
-                        <a id="logo" href="home.html?name={{name}}">
+                        <a id="logo" href="{{IPAddress}}/home?name={{name}}">
                             <img class="icon-logo" alt="logo" src="imgs/HF@2x.png">
                             <img class="icon-huafang" alt="华方金融" src="imgs/huafang@2x.png">
                         </a>
@@ -31,13 +32,13 @@
                         <ul>
                             <!-- home page -->
                             <li class="hf-menu-item active">
-                                <a id="home" href="home.html?name={{name}}">
+                                <a id="home" href="{{IPAddress}}/home?name={{name}}">
                                     <img src="imgs/icon-home@2x.png"> <span>个人首页</span>
                                 </a>
                             </li>
                             <!-- financial investment -->
                             <li class="hf-menu-item">
-                                <a id="financial" href="../financial/financial.html?name={{name}}">
+                                <a id="financial" href="{{IPAddress}}/financial?name={{name}}">
                                     <img src="imgs/icon-money@2x.png"> <span>理财投资</span>
                                 </a>
                             </li>
@@ -140,7 +141,7 @@
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="r in records">
-                                            <td>{{r.activity}}</td>
+                                            <td>{{r.type}}</td>
                                             <td>{{r.money}}</td>
                                             <td>{{r.time}}</td>
                                         </tr>
@@ -178,7 +179,7 @@
                         <div class="panel-title">请输入你要充值的金额</div>
                         <input type="text" name="save" ng-model="saveMoneyAmount" />
                         <button class="close-popPanel ripple" onclick="closeRechargePanel()">取消</button>
-                        <button class="confirm ripple" ng-click="postSavedMoney" ng-value="flexible" onclick="closeRechargePanel()">确定</button>
+                        <button class="confirm ripple" ng-click="postSavedMoney()" ng-value="flexible" onclick="closeRechargePanel()">确定</button>
                     </div>
                 </div>
                 <!-- withdrawal panel -->
@@ -187,7 +188,7 @@
                         <div class="panel-title">请输入你要提现的金额</div>
                         <input type="text" name="withdraw" ng-model="withdrawMoneyAmount" />
                         <button class="close-popPanel ripple" onclick="closeWithdrawalPanel()">取消</button>
-                        <button class="confirm ripple" ng-click="postWithdrawnMoney"
+                        <button class="confirm ripple" ng-click="postWithdrawnMoney()"
                             onclick="closeWithdrawalPanel()">确定</button>
                     </div>
                 </div>
@@ -199,7 +200,7 @@
                         <input type="text" name="transferUser" ng-model="transferUser" placeholder="用户名">
                         <input type="text" name="transfer" ng-model="transferMoneyAmount" placeholder="金额" />
                         <button class="close-popPanel ripple" onclick="closeTransferPanel()">取消</button>
-                        <button class="confirm ripple" ng-click="postTransferedMoney"
+                        <button class="confirm ripple" ng-click="postTransferedMoney()"
                             onclick="closeTransferPanel()">确定</button>
                     </div>
                 </div>
@@ -207,7 +208,7 @@
 
         </div>
     </div>
-    <script src="js/home.js"></script>
+    
 </body>
 
 </html>

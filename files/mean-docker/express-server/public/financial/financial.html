@@ -22,7 +22,7 @@
                 <div class="hf-menu">
                     <!-- logo bar -->
                     <div class="top-bar">
-                        <a id="logo" href="../home/home.html?name={{name}}">
+                        <a id="logo" href="{{IPAdress}}/home?name={{name}}">
                             <img class="icon-logo" alt="logo" src="imgs/HF@2x.png">
                             <img class="icon-huafang" alt="华方金融" src="imgs/huafang@2x.png">
                         </a>
@@ -32,13 +32,13 @@
                         <ul>
                             <!-- home page -->
                             <li class="hf-menu-item">
-                                <a id="home" href="../home/home.html?name={{name}}">
+                                <a id="home" href="{{IPAdress}}/home?name={{name}}">
                                     <img src="imgs/icon-home@2x.png"> <span>个人首页</span>
                                 </a>
                             </li>
                             <!-- financial investment -->
                             <li class="hf-menu-item active">
-                                <a id="financial" href="financial.html?name={{name}}">
+                                <a id="financial" href="{{IPAdress}}/financial?name={{name}}">
                                     <img src="imgs/icon-money@2x.png"> <span>理财投资</span>
                                 </a>
                             </li>
@@ -87,15 +87,15 @@
                 </div>
                 <!-- <div style="width: 100%; height: 50%;"></div> -->
                 <div class="p-right-middle">
-                    <div class="block">
+                    <div class="block totalInvest">
                         <div class="investAndProfit">
-                            <div class="money">￥{{totalInvest}}</div>
+                            <div class="money">{{totalInvest}}</div>
                             <div class="words">总投资</div>
                         </div>
                     </div>
-                    <div class="block" style="background-color: #F35157;">
+                    <div class="block totalProfit">
                         <div class="investAndProfit">
-                            <div class="money">￥{{totalProfit}}</div>
+                            <div class="money">{{totalProfit}}</div>
                             <div class="words">总收益</div>
                         </div>
                     </div>
@@ -104,10 +104,8 @@
                             <div class="record-block-title">近期投资记录</div>
                         </div>
                         <div class="record-block-row" style="height: 70%;">
-                            <table ng-repeat="r in investRecords">
-                                <tr><td>{{r.productName}}</td><td style="font-weight: bold;">{{r.money}}</td><td>{{r.time}}</td></tr>
-                                <!-- <tr><td>60天定期</td><td style="font-weight: bold;">+3,000.00</td><td>2019-5-27 01:18:05</td></tr>
-                                <tr><td>60天定期</td><td style="font-weight: bold;">-3,000.00</td><td>2019-5-27 01:18:05</td></tr> -->
+                            <table>
+                                <tr ng-repeat="r in investRecords"><td>{{r.productName}}</td><td style="font-weight: bold;">{{r.money}}</td><td>{{r.time}}</td></tr>
                             </table>
                         </div>
                     </div>
@@ -131,7 +129,7 @@
                                 </div>
                             </div>
                             <div style="width: 50%; height: 100%; float: left;">
-                                <div style="margin: 10px;">
+                                <div>
                                     <div class="interest-words">累计收益</div>
                                     <div class="interest">￥{{totalProfit}}</div>
                                 </div>
@@ -142,7 +140,7 @@
                             <button class="withdrawal-btn ripple" id="withdrawMoneyBtn">转出</button>
                         </div>
                     </div>
-                    <div class="input-money shadow-sm" id="saveMoneyDiv" ng-controller="saveMoneyController">
+                    <!-- <div class="input-money shadow-sm" id="saveMoneyDiv" ng-controller="saveMoneyController">
                         <div class="input-money-title">请输入转入金额大小</div>
                         <div class="input-money-body" align="center">
                             请输入金额大小：<input type="text" name="saveMoney" ng-model="saveMoneyAmount"/>
@@ -151,14 +149,48 @@
                             <button class="input-money-cancel-btn ripple" id="saveMoneyCancel">取消</button>
                             <button class="input-money-confirm-btn ripple" id="saveMoneyConfirm" ng-click="onSaveMoneyConfirm">确定</button>
                         </div>
-                    </div>
-                    <div class="input-money shadow-sm" id="withdrawMoneyDiv" ng-controller="withdrawMoneyController">
+                    </div> -->
+                    <!-- <div class="input-money shadow-sm" id="withdrawMoneyDiv" ng-controller="withdrawMoneyController">
                         <div class="input-money-title">请输入转出金额大小</div>
                         <div class="input-money-body" align="center">
                             请输入金额大小：<input type="text" name="withdrawMoney" ng-model="withdrawMoneyAmount"/>
                         </div>
                         <div style="width: 100%; height: 33%;" align="center">
                             <button class="input-money-cancel-btn ripple" id="withdrawMoneyCancel">取消</button>
+                            <button class="input-money-confirm-btn ripple" id="withdrawMoneyConfirm" ng-click="onWithdrawMoneyConfirm">确定</button>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+            <!-- save panel -->
+            <div id="saveMoneyDiv" class="pop-page">
+                <div id="popLayer"></div>
+                <!-- recharge panel -->
+                <div class="popPanel">
+                    <div class="panel-container" ng-controller="saveMoneyController">
+                        <div class="panel-title">请输入转入金额大小</div>
+                        <div class="input-money-body" align="center">
+                            <input type="text" name="saveMoney" ng-model="saveMoneyAmount"/>
+                        </div>
+                        <div style="width: 100%; height: 33%;" align="center">
+                            <button class="close-popPanel input-money-cancel-btn ripple" id="saveMoneyCancel">取消</button>
+                            <button class="input-money-confirm-btn ripple" id="saveMoneyConfirm" ng-click="onSaveMoneyConfirm">确定</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- withdraw panel -->
+            <div id="withdrawMoneyDiv" class="pop-page">
+                <div id="popLayer"></div>
+                <!-- recharge panel -->
+                <div class="popPanel">
+                    <div class="panel-container" ng-controller="withdrawMoneyController">
+                        <div class="panel-title">请输入转出金额大小</div>
+                        <div class="input-money-body" align="center">
+                            <input type="text" name="withdrawMoney" ng-model="withdrawMoneyAmount"/>
+                        </div>
+                        <div style="width: 100%; height: 33%;" align="center">
+                            <button class="close-popPanel input-money-cancel-btn ripple" id="withdrawMoneyCancel">取消</button>
                             <button class="input-money-confirm-btn ripple" id="withdrawMoneyConfirm" ng-click="onWithdrawMoneyConfirm">确定</button>
                         </div>
                     </div>
