@@ -101,7 +101,7 @@ homeApp.controller("homeMainController", function($scope, $http) {
     $http({
         method: 'POST',
         url: address+'/api/userInfo',
-        params: {
+        data: {
             'name': name,
         }
     }).then(function success(res){

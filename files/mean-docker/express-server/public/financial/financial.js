@@ -75,50 +75,51 @@ const formatNumber = n => {
 let currentUserName = '';
 
 var financialApp = angular.module("financialApp", []);
-financialApp.controller("financialMainController", function($scope) {
+financialApp.controller("financialMainController", function($scope,$http) {
     $scope.IPAddress = address;
     let param = window.location.search;
     let name = param.substring(6, param.length); //从url中得到用户名
     currentUserName = name;
     $scope.name = currentUserName;
-    $scope.totalInvest = 100.00;
-    $scope.totalProfit = 10.00;
-    $scope.totalInvestMoney = $scope.totalInvest + $scope.totalProfit;
-    $scope.investRecords = [{
-        productName: '60天定期',
-        money: '+3,000.00',
-        time: '2019-5-28 16:01:34'
-    },{
-        productName:'60天定期',
-        money: '-3,000.00',
-        time: '2019-5-28 16:02:12'
-    }];
+    // $scope.totalInvest = 100.00;
+    // $scope.totalProfit = 10.00;
+    // $scope.totalInvestMoney = $scope.totalInvest + $scope.totalProfit;
+    // $scope.investRecords = [{
+    //     productName: '60天定期',
+    //     money: '+3,000.00',
+    //     time: '2019-5-28 16:01:34'
+    // },{
+    //     productName:'60天定期',
+    //     money: '-3,000.00',
+    //     time: '2019-5-28 16:02:12'
+    // }];
     //一开始便发送一次http得到用户的数据信息
-    // $http({
-    //     method: 'GET',
-    //     url: 'localhost/xxxx/xxxx'
-    //     params: {
-    //         'name': name,
-    //     }
-    // }).then(function success(res){
-    //     $scope.totalInvest = res.data.totalInvest;
-    //     $scope.totalProfit = res.data.totalProfit;
-    //     $scope.totalMoney = $scope.totalInvest + $scope.totalProfit;
-    //     $scope.investRecords = res.data.investRecords;
-    // }, function error(res){
-    //     console.log(res);
-    // });
+    $http({
+        method: 'POST',
+        url: address+'/api/userInfo',
+        data: {
+            'name': name,
+        }
+    }).then(function success(res){
+        console.log(res);
+        $scope.totalInvestMoney = res.data.totalInvestMoney;
+        $scope.totalProfit = res.data.totalInvestMoney*0.02526*60;
+        $scope.totalMoney = $scope.totalInvest + $scope.totalProfit;
+        $scope.investRecords = res.data.investRecords;
+    }, function error(res){
+        console.log(res);
+    });
 })
 
-financialApp.controller('saveMoneyController', function($scope){
+financialApp.controller('saveMoneyController', function($scope, $http){
     $scope.onSaveMoneyConfirm = function() {
         $http({
             method: 'POST',
-            url: 'localhost/xxxx/xxxx',
+            url: address+'/api/buyProduct',
             data: {
                 "name": currentUserName,
                 "productName": "60天定期", //产品名
-                "burMoneyAmount": $scope.saveMoneyAmount, //买入金额大小
+                "buyMoneyAmount": $scope.saveMoneyAmount, //买入金额大小
                 "time": formatTime(new Date()),
             }
         }).then(function success(res) {
@@ -129,11 +130,11 @@ financialApp.controller('saveMoneyController', function($scope){
     }
 })
 
-financialApp.controller('withdrawMoneyController', function($scope){
+financialApp.controller('withdrawMoneyController', function($scope, $http){
     $scope.onWithdrawMoneyConfirm = function() {
         $http({
             method: 'POST',
-            url: 'localhost/xxxx/xxxx',
+            url: address+'/api/sellProduct',
             data: {
                 "name": currentUserName,
                 "productName": "60天定期", //产品名

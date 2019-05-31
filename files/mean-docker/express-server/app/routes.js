@@ -92,11 +92,16 @@ module.exports = function (app) {
     //get userInfo 包括所有的存款投资金额，交易记录等个人首页的信息
     app.post('/api/userInfo', async function (req, res) {
         var userName = req.body.name;
-
+        console.log(userName);
         var userInfo = await Account.findUserAllInfo(userName);
+        // onsole.log(userInfo);c
+        // var records = await Transaction.findTsByName(userName);
 
-        var records = await Transaction.findTsByName(userName);
+        var records = await Transaction.find({ "mainAccountName": req.body.name }, function (err, docs) {
+            // console.log(docs);
+        });
 
+        // console.log(records);
         var monthTExpend = 0;
         var monthTIncome = 0;
         var currentDate = new Date();
@@ -111,6 +116,7 @@ module.exports = function (app) {
         //         time: time,
         //     })
         // }
+        var investRecords = [];
         await records.map(function(record,index){
             if(record.GMTtime.getFullYear()==currentDate.getFullYear()&&record.GMTtime.getMonth()==currentDate.getMonth()){
                 //交易类型：取款，存款，转入，转出，买入，卖出
@@ -128,6 +134,14 @@ module.exports = function (app) {
                 money: record.money,
                 time: time,
             })
+
+            
+        })
+
+        await temp.map(function(record,index){
+            if(record.type=='卖出'||record.type=='买入'){
+                investRecords.push(record);
+            }
         })
 
         var resData = {
@@ -138,10 +152,11 @@ module.exports = function (app) {
             monthTExpend: monthTExpend,
             monthTIncome: monthTIncome,
             records: temp,
+            investRecords:investRecords,
         }
-        console.log(resData);
-        console.log("     ---------------------")
-        console.log(resData.records);
+        // console.log(resData);
+        // console.log("     ---------------------")
+        // console.log(resData.records);
 
         res.json(resData);
     })
@@ -248,6 +263,7 @@ module.exports = function (app) {
 
     //buyProduct
     app.post('/api/buyProduct', async function (req, res) {
+        console.log("enter buy product ");
         let pro=0;
         await Account.findOne({ "name": req.body.name }, function (err, docs) {
             console.log(docs+"amount accout");
@@ -259,8 +275,8 @@ module.exports = function (app) {
                 console.log(docs.property);
                 if((pro - req.body.buyMoneyAmount)>=0){
                     console.log("33333333333");
-                docs.property = docs.property - req.body.buyMoneyAmount;
-                docs.investAmount = docs.investAmount + req.body.buyMoneyAmount;
+                docs.property = docs.property - parseInt(req.body.buyMoneyAmount);
+                docs.investAmount = docs.investAmount + parseInt(req.body.buyMoneyAmount);
                 docs.save(function(err,docs){
                     if(err)console.log(err);
                 });
@@ -268,7 +284,8 @@ module.exports = function (app) {
             }
         });
         console.log(pro);
-        if((pro - req.body.buyMoneyAmount)>=0){
+        console.log(typeof req.body.buyMoneyAmount);
+        if((pro - parseInt(req.body.buyMoneyAmount))>=0){
             console.log("enter buy=== ");
         await ProductRecord.findOne({ $and: [{ "name": req.body.productName }, { "ownerName": req.body.name }] },
             function (err, docs) {
@@ -277,7 +294,7 @@ module.exports = function (app) {
                     if (docs != null) {
                         console.log(docs.money);
                         console.log(docs+"hhhhhhhhhhhh");
-                        docs.money = docs.money + req.body.buyMoneyAmount;
+                        docs.money = docs.money + parseInt(req.body.buyMoneyAmount);
                         docs.save(function (err, docs) {
                             if (err) console.log(err);
                         });
@@ -309,7 +326,7 @@ module.exports = function (app) {
 
         console.log("------------------------------------------")
         console.log("productRecord");
-        await ProductRecord.find(function (err, docs) {
+        await ProductRecord.find({ "ownerName": req.body.name },function (err, docs) {
             console.log(docs);
         });
         console.log("------------------------------------------")
@@ -331,7 +348,7 @@ module.exports = function (app) {
                         product=docs;
                         console.log(docs+"aaaaaaaa");
                         if (docs.money - req.body.sellMoneyAmount >= 0)
-                        {docs.money = docs.money - req.body.sellMoneyAmount;
+                        {docs.money = docs.money - parseInt(req.body.sellMoneyAmount);
                             docs.save(function (err, docs) {
                                 if (err) console.log(err);
                             });
@@ -353,13 +370,13 @@ module.exports = function (app) {
             else if (docs != null&&product!=null&&(product.money-req.body.sellMoneyAmount)>=0) {
                 console.log("hhhhhhhhhhhhhhhhhhhhhhhhhh");
                 docs.property = docs.property + req.body.sellMoneyAmount*(1+product.profit);
-                docs.investAmount = docs.investAmount - req.body.sellMoneyAmount;
+                docs.investAmount = docs.investAmount - parseInt(req.body.sellMoneyAmount);
                 docs.save(function (err, docs) {
                     if (err) console.log(err);
                 });
             }
         });
-        let sellAmount =req.body.sellMoneyAmount*(1+product.profit);
+        let sellAmount =parseInt(req.body.sellMoneyAmount)*(1+product.profit);
         await Transaction.create({
             mainAccountName: req.body.name,//用户名字
             type: '卖出',//操作类型，只有取出，存款，转账，买入，卖出六种
@@ -393,7 +410,7 @@ module.exports = function (app) {
         console.log("enter transfer");
         await Account.findOne({ name: req.body.name }, function (err, dosc) {
             if (err) console.log("error");
-            dosc.property = dosc.property - req.body.amount;
+            dosc.property = dosc.property - parseInt(req.body.amount);
             dosc.save(function (err, dosc) {
                 if (err) console.log(err);
             })
@@ -401,7 +418,7 @@ module.exports = function (app) {
         await Account.findOne({ name: req.body.transferUserName }, function (err, dosc) {
             if (err) console.log("error");
             if (dosc != null) {
-                dosc.property = dosc.property + req.body.amount;
+                dosc.property = dosc.property + parseInt(req.body.amount);
                 dosc.save(function (err, dosc) {
                     if (err) console.log(err);
                 });

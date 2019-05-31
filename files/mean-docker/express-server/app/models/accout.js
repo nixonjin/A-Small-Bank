@@ -40,12 +40,11 @@ account.statics = {
     },
     findUserAllInfo: async function(userName) {
         //const userInfo = await this.findOne({_id userId}).exec();
-        const userInfo = await this.find({name: userName}).exec();
+        const userInfo = await this.findOne({name: userName}).exec();
 
         if(!userInfo)   return null;
 
         return userInfo;
-
     },
 }
 
